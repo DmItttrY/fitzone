@@ -1,7 +1,9 @@
-// Ваш основной файл
+// Основной файл
 
 import 'package:flutter/material.dart';
 import 'category_template.dart'; // Импорт вашего шаблона страницы
+import 'search_page.dart'; // Импорт вашей страницы поиска
+import 'profile_page.dart'; // Импорт вашей страницы профиля
 
 void main() => runApp(MyApp());
 
@@ -9,37 +11,45 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: OptionTile(
-                  title: 'Поддерживать форму тела',
-                  imageAsset: 'assets/fit.png',
-                  nextPage: PageTemplate(title: 'Поддерживать форму тела'), // Передача данных о следующей странице
-                ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  SizedBox(height: 16), // Добавлен отступ в начале списка
+                  OptionTile(
+                    title: 'Поддерживать форму тела',
+                    imageAsset: 'assets/fit.png',
+                    nextPage: PageTemplate(title: 'Поддерживать форму тела'),
+                  ),
+                  SizedBox(height: 16), // Добавлен отступ между контейнерами
+                  OptionTile(
+                    title: 'Реабилитация',
+                    imageAsset: 'assets/rehab.png',
+                    nextPage: PageTemplate(title: 'Реабилитация'),
+                  ),
+                  SizedBox(height: 16), // Добавлен отступ между контейнерами
+                  OptionTile(
+                    title: 'Физиотерапия',
+                    imageAsset: 'assets/physio.png',
+                    nextPage: PageTemplate(title: 'Физиотерапия'),
+                  ),
+                  SizedBox(height: 16), // Добавлен отступ в конце списка
+                ],
               ),
-              Spacer(),
-              Expanded(
-                child: OptionTile(
-                  title: 'Реабилитация',
-                  imageAsset: 'assets/rehab.png',
-                  nextPage: PageTemplate(title: 'Реабилитация'), // Передача данных о следующей странице
-                ),
-              ),
-              Spacer(),
-              Expanded(
-                child: OptionTile(
-                  title: 'Физиотерапия',
-                  imageAsset: 'assets/physio.png',
-                  nextPage: PageTemplate(title: 'Физиотерапия'), // Передача данных о следующей странице
-                ),
-              ),
-              SizedBox(height: 16),
-              BottomMenu(),
-            ],
-          ),
+            ),
+            BottomMenu(),
+          ],
         ),
       ),
     );
@@ -49,19 +59,19 @@ class MyApp extends StatelessWidget {
 class OptionTile extends StatelessWidget {
   final String title;
   final String imageAsset;
-  final Widget nextPage; // Добавлено поле для хранения следующей страницы
+  final Widget nextPage;
 
   const OptionTile({
     required this.title,
     required this.imageAsset,
-    required this.nextPage, // Обновленный конструктор
+    required this.nextPage,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector( // Замена ListTile на GestureDetector для обработки нажатий
+    return GestureDetector(
       onTap: () {
-        Navigator.push( // Используйте Navigator для открытия новой страницы
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => nextPage),
         );
@@ -105,20 +115,32 @@ class BottomMenu extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Icon(
-            Icons.search,
-            size: 40,
-            color: Colors.white,
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchPage()),
+              );
+            },
           ),
-          Icon(
-            Icons.category_outlined,
-            size: 40,
-            color: Colors.white,
+          IconButton(
+            icon: Icon(Icons.category_outlined),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage()),
+              );
+            },
           ),
-          Icon(
-            Icons.account_box_outlined,
-            size: 40,
-            color: Colors.white,
+          IconButton(
+            icon: Icon(Icons.account_box_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
           ),
         ],
       ),
